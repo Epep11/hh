@@ -1,0 +1,535 @@
+CpE 418: SOFTWARE DESIGN
+2nd Semester A.Y. 2024-2025
+
+
+Final Requirement
+
+
+To-Do List and Auto File Sorter
+
+
+Prepared by:
+
+Group No.7
+Arcenas, Derek Wiliam
+Capalaran, Kathleen C.
+Capalaran, Ma.Isabela D.
+Lebrilla, Meinhard Jeztin
+Santos, Christine Raine B.
+CpE-3205
+
+
+
+
+
+
+
+
+
+Submitted to:
+Engr. Mercedita D. Ocampo
+Course Instructor
+
+
+
+
+
+Introduction
+In today’s digital era, individuals are increasingly challenged by the demands of managing multiple responsibilities and maintaining organized digital environments. With the continuous growth of digital data, users often find themselves dealing with cluttered folders, unstructured file systems, and a lack of effective task-tracking methods. These issues contribute to decreased productivity, missed deadlines, misplaced files, and overall inefficiency. As digital workloads expand, the need for integrated tools that assist with task and file management becomes essential for both personal and professional settings.
+To address these challenges, this project introduces a To-Do List and Auto File Organizer System, a dual-function productivity solution aimed at improving workflow efficiency and digital organization. The system is designed to help users manage their daily tasks while automatically organizing files based on predefined criteria, ultimately saving time and minimizing manual effort. By integrating task tracking with automated file sorting, the system provides a comprehensive approach to personal productivity and digital housekeeping.
+The To-Do List component of the system allows users to create, prioritize, edit, and track tasks. It supports essential features such as deadlines, status updates, and categorization, enabling users to stay focused and systematically manage their workload. On the other hand, the Auto File Organizer continuously monitors a specified directory—such as the Downloads or Desktop folder—and sorts files into categorized folders based on file type, creation date, or user-defined rules. For example, image files can be moved to a “Pictures” folder, documents to a “Work Files” folder, and so on.
+The primary goal of this system is to increase efficiency by minimizing time spent on repetitive and mundane tasks, such as locating important documents or manually organizing files. Moreover, it showcases how automation and basic programming logic can be applied to solve real-world digital problems. While the current implementation focuses on essential features, it provides a scalable foundation that can be enhanced in future developments with capabilities such as cloud integration, user notifications, intelligent file categorization, and cross-platform compatibility.
+
+Objective 
+To develop a user-friendly to-do list application that allows users to efficiently manage and track their daily tasks.
+
+
+To create an automatic file organizer that categorizes and moves files into appropriate folders based on predefined rules.
+
+
+To integrate the task manager and file organizer into a single system for streamlined productivity and ease of use.
+
+
+To minimize manual file handling and task tracking, thereby saving users time and reducing digital clutter.
+
+
+
+
+Tools & Technologies Used
+Tool / Technology
+Purpose
+                      
+                      JavaScript
+                      ReactJS
+                      Vite Framework    
+
+Programming Language
+JavaScript Library
+Supports the ReactJS
+                      Visual Studio Code
+Code Editor
+                      SupaBase/DataBase
+
+
+                       GitHub
+To call user info then storing data on database / Data Management
+
+Version Control
+                       Draw.io
+
+
+Create Flowchart and Diagram 
+
+                       Typescript                             Superset of JavaScript
+
+TypeScript is a superset of JavaScript, meaning it includes all features of JavaScript and adds optional static typing.
+Software Requirements Specification (SRS)
+4.1 Functional Requirements
+Describe the primary functions of the software.	
+User Authentication and Authorization
+The system must support a login system before accessing the to-do list
+Only Authenticated users are allowed to manage each of their own tasks 
+Task Management
+Users can add new tasks to their to-do list
+Users can delete tasks they don't need 
+Each tasks should’ve a brief description
+Users can update or mark it complete whenever they’re finished
+
+Task Display 
+System should display all the tasks in listed format 
+Completed tasks should be noticeable 
+Tasks should be in order or sorted from the date they were added 
+
+Local Data Persistence 
+The system should store tasks locally in users local storage 
+Tasks data should stay on every page reloads 
+Responsive User Interface 
+The Layout should adjust to any desktop screens 
+All UI elements should be usable on any desktop. 
+Single - Page Operation 
+The system should be a single page application to save more time from continuously reloading the page. 
+Adding, Deleting and completing tasks should be done without multiple page reloads. 
+Accessibility and Simplicity 
+The interface should be minimalistic and clean to easily understand how the system works. 
+4.2 Non-Functional Requirements
+Describe performance, usability, and reliability.
+Performance
+User interactions (Add, Remove, Complete) must respond in under 0.5 seconds
+Page should reload in under a second 
+Scalability
+The system should allow the user to add plenty of tasks without any performance issues. 
+Front-end logic should handle local data efficiently without facing any lags. 
+Security 
+The system should support secure user authentication using username and password.
+Only authenticated users should be able to access the system.
+The system should prevent common security vulnerabilities. 
+Reliability 
+The system should always performs its main functions (user login, adding, deletion and completion)
+The application should maintain a minimum uptime of 99.5%, ensuring high availability during normal usage.
+All the actions that have been done should be saved after every login.
+
+Maintainability 
+The codebase should use modular component-based development (e.g., Reactjs)
+Components should be documented to allow future reviews about the system
+Usability
+The system should provide a user-friendly interface and a minimalistic user interface 
+Action buttons should be clearly labeled and readable 
+No complicated stuffs should be added on the system 
+Backup and Recovery
+Tasks should remain sorted on the system until the user decides to deletes it
+Files should remain on the user’s local storage. 
+
+
+System Design
+5.1 Flowchart / UML Diagrams
+Database Schema
+
+
+
+
+
+
+
+
+
+
+The diagram represents a comprehensive database schema for a collaborative task management system. At the core of the system is user authentication, managed externally via the auth.users table, which serves as the primary reference for identifying and associating user-related data throughout the system.
+The profiles table extends user information by storing details such as the user's full name and the timestamp of the last update. This separation allows the application to manage user profiles independently of authentication logic, promoting a cleaner and more modular structure.
+The task table is the centerpiece of the system. It stores detailed information about each task created by users, including the task description, completion status, start and due dates, category, priority, color coding, status, and timestamps for creation and updates. Each task is associated with a creator (user_id) and may also be assigned to another user (assigned_to), both referencing the auth.users table. This structure supports individual task ownership as well as delegation within teams.
+To help users better organize their tasks, the categories table allows the creation of custom categories. Each category is linked to a user and includes a name and creation timestamp. Tasks can be assigned to categories, enabling users to group and filter their tasks based on type, purpose, or project.
+Collaboration is facilitated through the comments table, which allows users to add comments on tasks. Each comment includes the related task_id, the commenting user's user_id, the content (text), and the timestamp of when it was made (created_text). This feature supports real-time communication and documentation within tasks, helping teams stay aligned.
+The activities table serves as a comprehensive audit trail, logging every significant action performed on tasks, such as creation, updates, completions, or reassignment. Each activity log contains the related task and user, the type of activity, a description, and a timestamp. This ensures that the system maintains transparency and traceability for all task-related events.
+Overall, the schema is designed for flexibility, scalability, and effective teamwork. It enables a user-friendly experience where users can manage tasks, categorize them, collaborate through comments, and track all interactions through activity logs. This structure makes the system well-suited for both individual productivity and team-based project management.
+
+
+
+
+
+
+Data Flow Diagram (DFD)
+
+      Context Level
+
+
+
+
+
+
+
+
+
+Level 0
+      
+
+Level 1
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+The To-Do List and Auto File Sorter System allows users to efficiently manage daily tasks and organize files through an intuitive interface. At its core, the system handles user interactions like login, task input, and file uploads, while connecting to a backend database for secure data storage and retrieval. From the user’s side, the system provides feedback such as task lists, sorted file results, and activity responses. All core data operations—authentication, saving tasks, organizing categories—are centralized and handled through communication with the system’s database. This top-level view highlights the role of the system as a middle layer between the user’s actions and the stored data.
+At the Level 0 perspective, the entire system is managed under one major process: Task Management Process. This process is responsible for validating the user’s identity, managing the logic behind task creation and tracking, and linking every user action to the underlying database. When a user interacts with the system—such as creating a new task or editing a category—the Task Management Process takes that input, confirms the user's identity through Supabase Auth, and performs the corresponding data operation in Supabase DB. Whether it's storing new task details or fetching a user’s list of activities, the process ensures that data is handled securely and accurately.
+The Level 1 view goes even deeper, breaking down the main task management process into smaller functional components. First is Manage Task, which deals with all operations related to creating, updating, deleting, or retrieving tasks. Then there’s Authenticate User, which handles login and access control using Supabase Auth. Track Activities logs user behavior, helping to generate history or timelines of changes. Lastly, Manage Categories lets users organize their tasks by grouping them into categories. Each of these components connects to the Supabase backend—either for verifying user identity or modifying data—ensuring that every action taken by the user is validated and correctly reflected in the system. This level demonstrates how modular and organized the internal processes are, making the system efficient, secure, and user-centered.
+
+
+
+
+
+
+
+ Entity-Relationship Diagram (ERD)
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Implementation
+6.1 Authentication System
+```typescript
+// src/components/AuthForm.tsx
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError('')
+  setLoading(true)
+  let error
+  if (isLogin) {
+    const res = await supabase.auth.signInWithPassword({ email, password })
+    error = res.error
+  } else {
+    const res = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    })
+    error = res.error
+  }
+  setLoading(false)
+  if (error) setError(error.message)
+  else message.success(isLogin ? 'Logged in!' : 'Check your email to confirm sign up!')
+}
+```
+This code handles user authentication, supporting both login and signup functionality using Supabase authentication.
+
+6.2 Logout Process
+```typescript
+// src/components/Settings.tsx
+const handleLogout = async () => {
+  onLogout()
+  // Wait for 3 seconds before signing out
+  await new Promise(resolve => setTimeout(resolve, 3000))
+  await supabase.auth.signOut()
+}
+
+// src/components/LogoutScreen.tsx
+const [countdown, setCountdown] = useState(3)
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCountdown(prev => {
+      if (prev <= 1) {
+        clearInterval(timer)
+        return 0
+      }
+      return prev - 1
+    })
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+Implements a smooth logout process with a 3-second countdown timer and visual feedback.
+
+6.3 Theme Management
+```typescript
+// src/context/ThemeContext.tsx
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode')
+    return saved ? JSON.parse(saved) : false
+  })
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
+}
+```
+Manages application theme state with dark/light mode support and persistence.
+
+6.4 Todo Management
+```typescript
+// src/context/TodoContext.tsx
+const fetchTodos = async (uid?: string) => {
+  const id = uid || userId
+  if (!id) {
+    setTodos([])
+    return
+  }
+  const { data: todosData, error: todosError } = await supabase
+    .from('tasks')
+    .select('*')
+    .eq('user_id', id)
+    .order('created_at', { ascending: false })
+
+  const { data: commentsData, error: commentsError } = await supabase
+    .from('comments')
+    .select('*')
+    .eq('user_id', id)
+
+  // Attach comments to each todo
+  const todosWithComments = (todosData || []).map(todo => ({
+    ...todo,
+    startDate: todo.start_date ? dayjs(todo.start_date) : undefined,
+    dueDate: todo.due_date ? dayjs(todo.due_date) : undefined,
+    comments: (commentsData || []).filter(c => c.task_id === todo.id)
+  }))
+}
+```
+Handles fetching and managing todos with associated comments from the database.
+
+
+Testing
+        7.1 Authentication Tests
+1. Login Test
+   - Input: Valid email and password
+   - Expected: Successful login, redirect to dashboard
+   - Actual: User is logged in and redirected to dashboard
+
+2. Signup Test
+   - Input: New email and password
+   - Expected: Account creation, confirmation email sent
+   - Actual: Account created, confirmation email sent
+
+3. Invalid Login Test
+   - Input: Invalid email/password
+   - Expected: Error message displayed
+   - Actual: Error message shown to user
+
+ 7.2 Logout Tests
+1. Logout Process Test
+   - Input: Click logout button
+   - Expected: 3-second countdown, then logout
+   - Actual: Countdown timer shows, logout completes after 3 seconds
+
+2. Logout Screen Test
+   - Input: During logout
+   - Expected: Animated logout screen with countdown
+   - Actual: Smooth animation, countdown timer visible
+
+ 7.3 Theme Tests
+1. Dark Mode Toggle
+   - Input: Toggle dark mode
+   - Expected: Theme changes, persists on reload
+   - Actual: Theme changes, persists in localStorage
+
+2. Custom Colors
+   - Input: Change UI colors
+   - Expected: Colors update across application
+   - Actual: Colors update and persist
+
+ 7.4 Todo Management Tests
+1. Create Todo
+   - Input: New todo details
+   - Expected: Todo created in database
+   - Actual: Todo appears in list
+
+2. Add Comment
+   - Input: Comment text
+   - Expected: Comment attached to todo
+   - Actual: Comment appears under todo
+
+3. Fetch Todos
+   - Input: User ID
+   - Expected: All user's todos with comments
+   - Actual: Todos loaded with associated comments
+
+
+Results & Discussion
+Analyze the outcomes. Mention any bugs encountered and how they were solved.
+Was the objective achieved? Any improvements made?
+
+The development of the To-Do List and Auto File Sorter System  yielded successful and measurable outcomes, fulfilling the key objectives established during the project’s planning and requirements analysis phases. The system effectively integrates two major functionalities  task management and automated file organization providing users with a streamlined productivity tool designed to enhance digital efficiency.
+Built using JavaScript, ReactJS, Vite framework, and Supabase as the database solution, the system allows users to create, manage, prioritize, and track their tasks while simultaneously organizing their files based on predefined rules such as file type and creation date. The To-Do List component features task creation, editing, deletion, and completion tracking, all of which are stored locally, ensuring persistent data even upon page reloads. The Auto File Organizer continuously monitors designated folders and automatically categorizes files into appropriate subfolders, effectively reducing manual file handling.
+System testing confirmed the successful implementation of core features, such as task persistence through local storage, real-time task updates, and accurate file sorting based on user-defined criteria. The user interface, developed using ReactJS, provided a responsive and user-friendly experience. Notable improvements were observed in workflow efficiency and organization, with users reporting a reduction in time spent on repetitive tasks and better management of their digital workspace.
+Despite minor bugs encountered during the integration phase such as file misclassification and task deletion anomalies  these were promptly resolved through debugging and code refactoring. The final system met all specified objectives, demonstrating robustness, reliability, and ease of use. The project not only showcased the application of modern web technologies but also laid a scalable foundation for future enhancements, such as cloud storage integration, intelligent file categorization, and cross-platform support.
+Conclusion
+Summarize the lab work, learnings, and future recommendations.
+
+The To-Do List and Auto File Sorter System developed by Group 7 was a comprehensive project that incorporated essential software design practices, seamless system integration, and user-centered development methodologies. The solution effectively addressed common digital productivity challenges such as disorganized files, inefficient task tracking, and manual file handling. By integrating task management with automated file sorting, the system allowed users to streamline their workflows and maintain an organized digital environment with minimal effort.
+Throughout the development process, the group overcame various technical and collaborative challenges, which served as valuable learning opportunities. The project enabled team members to enhance their competencies in front-end development using ReactJS, back-end integration with Supabase, local data persistence, and version control with GitHub. These tools were instrumental in ensuring a smooth and efficient development workflow.
+Furthermore, the project demonstrated the advantages of modular and scalable system architecture. Designed to be both user-friendly and easily extendable, the system sets a foundation for future enhancements such as cloud integration, advanced task analytics, intelligent file categorization, and cross-platform compatibility. The clean and intuitive interface was well-received in testing, allowing even non-technical users to navigate and operate the system effortlessly.
+In conclusion, the To-Do List and Auto File Sorter System not only met its initial objectives but also deepened the developers’ understanding of the complete software development lifecycle from requirements gathering and system design to testing and deployment. This project highlights the practical skills acquired by the team during their academic journey and provides a solid groundwork for the development of more sophisticated productivity tools in the future.
+Future Recommendations: Moving forward, the team suggests several enhancements to improve the system’s capabilities and adaptability. These include implementing user notifications for tasks, integrating cloud storage for remote file organization, adding intelligent file categorization using machine learning, and enabling cross-platform support for wider accessibility. These improvements will ensure that the system remains effective, relevant, and scalable in an ever-evolving digital workspace.
+
+
+
+
+
+
+
+
+
+Appendices
+
+
+Screenshots of outputs / GUI
+	LOGIN PAGE: 
+
+
+
+
+
+	LOGOUT PAGE:
+
+
+
+	DASHBOARD:
+
+
+
+
+	CALENDAR:
+
+
+TODO LIST:
+
+
+
+
+
+
+
+
+	TODO LIST > ADDING TASKS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	FILE ORGANIZER:
+
+
+	ANALYTICS:
+
+
+
+
+
+
+
+SETTINGS>GENERAL MODAL:
+
+SETTINGS>COLOR MODAL
+
+SETTINGS>THEMES MODAL
+
+
+SETTINGS>ABOUT MODAL
+
+
+
+
+
+
+
+
+
+
+Format:
+Paper Size: Short
+Margin: 1.5, 1, 1, 1
+Font Style: Times New Roman
+Font Size: 12
+Spacing: Single spacing
+Justify
+With Page Number (Bottom-Centered)
+Soft Bind
+Front Page Format
+
+Front Page Format
+Batangas State University – The National Engineering University
+Bachelor of Science in Computer Engineering
+
+
+
